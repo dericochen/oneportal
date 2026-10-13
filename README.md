@@ -61,6 +61,29 @@ Butuh Node.js 24 dan satu proyek Supabase (paket Free cukup).
 | `npm run db:migrasi` | Terapkan migrasi baru ke Supabase |
 | `npm run db:seed` | Seed data master dan akun demo |
 | `npm run db:reset-demo -- --ya` | Hapus semua laporan, riwayat, notifikasi, dan foto, lalu seed ulang. Tidak dapat dibatalkan |
+| `npx tsx scripts/uji-live.mts` | Uji akses 4 akun demo di situs live (403/404/redirect, daftar tanpa konfirmasi) |
+| `npx tsx scripts/uji-alur-live.mts --bersihkan` | Uji alur lengkap CMS → petugas → bukti → selesai di situs live, lalu hapus datanya |
+
+## Mengisi data tanpa kode (CMS)
+
+Semua data laporan dan fotonya diisi lewat situs, tidak perlu menyentuh kode:
+
+1. **Admin** (`/admin/laporan/baru`): catat laporan dari telepon, loket, atau media sosial, lengkap dengan foto dan titik peta. Warga juga bisa melapor sendiri di `/lapor`.
+2. **Admin** (`/admin/verifikasi`): buka laporan, pilih prioritas, instansi, dan petugas. Bisa juga tolak, teruskan, atau gabungkan.
+3. **Petugas** (`/petugas`): buka tugas, tekan "Mulai kerjakan", tambah progres berfoto, lalu kirim foto sebelum dan sesudah.
+4. **Admin** (`/admin/tinjau-bukti`): setujui bukti. Laporan otomatis selesai, dan fotonya tampil di beranda ("Baru saja selesai"), peta, dan halaman lacak.
+
+Command center (`/admin`, `/supervisor`) menampilkan ringkasan, peta semua laporan, daftar "Perlu perhatian", dokumentasi perbaikan terbaru, tren, per kecamatan, dan rapor instansi. Semua angka dihitung database.
+
+## Google Maps
+
+Peta memakai Google Maps JavaScript API. Tanpa kunci, situs tetap berjalan dan menampilkan pesan pengganti di tempat peta.
+
+1. Google Cloud Console: buat project, aktifkan **Maps JavaScript API**, lalu hubungkan akun penagihan (wajib oleh Google; ada kuota gratis bulanan).
+2. Credentials > Create credentials > API key. Batasi kuncinya:
+   - Application restrictions: **Websites**, isi `https://oneportal-one.vercel.app/*` dan `http://localhost:3000/*`.
+   - API restrictions: hanya **Maps JavaScript API**.
+3. Isi `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` di `.env.local` dan di Vercel (`npx tsx scripts/vercel-env.mts`), lalu deploy ulang.
 
 ## Deploy (Vercel)
 

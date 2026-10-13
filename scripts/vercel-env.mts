@@ -22,6 +22,8 @@ const DAFTAR: Array<{ nama: string; rahasia: boolean }> = [
   { nama: "NEXT_PUBLIC_SUPABASE_URL", rahasia: false },
   { nama: "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", rahasia: false },
   { nama: "NEXT_PUBLIC_SITE_URL", rahasia: false },
+  { nama: "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", rahasia: false },
+  { nama: "NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID", rahasia: false },
   { nama: "SUPABASE_SERVICE_ROLE_KEY", rahasia: true },
   { nama: "CRON_SECRET", rahasia: true },
 ];
