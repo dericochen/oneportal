@@ -15,6 +15,8 @@ export const warna = {
   hijau: "#1F7A4A",
   oranye: "#B85412",
   merah: "#B42318",
+  medanMerah: "#A3191E",
+  medanBiru: "#17216B",
 } as const;
 
 export type NamaWarna = keyof typeof warna;

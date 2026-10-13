@@ -6,6 +6,7 @@ import {
   ClipboardText,
   Eye,
   Gauge,
+  Images,
   ListChecks,
   MagnifyingGlass,
   MapTrifold,
@@ -54,6 +55,7 @@ export const MENU_ADMIN: GrupMenuStaf[] = [
       { href: "/admin/laporan/baru", label: "Catat laporan baru", ikon: Megaphone, tersedia: true },
     ],
   },
+  { judul: "Konten", butir: [{ href: "/admin/slide", label: "Slide beranda", ikon: Images, tersedia: true }] },
   { judul: "Pengguna", butir: [{ href: "/admin/pengguna", label: "Pengguna", ikon: UsersThree, tersedia: false }] },
   { judul: "Akun", butir: [{ href: "/notifikasi", label: "Notifikasi", ikon: Bell, tersedia: true }] },
 ];

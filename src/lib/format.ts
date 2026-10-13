@@ -69,6 +69,12 @@ export function formatTanggalPendek(waktu: MasukanWaktu): string {
   return `${b.tanggal} ${BULAN[b.bulan]}`;
 }
 
+/** "2026-10-13" (tanggal WIB, untuk nilai input type="date") */
+export function formatTanggalIso(waktu: MasukanWaktu): string {
+  const b = bagian(waktu);
+  return `${b.tahun}-${String(b.bulan + 1).padStart(2, "0")}-${String(b.tanggal).padStart(2, "0")}`;
+}
+
 /** "09.10" */
 export function formatJam(waktu: MasukanWaktu): string {
   const b = bagian(waktu);

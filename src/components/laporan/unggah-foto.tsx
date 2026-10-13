@@ -3,6 +3,7 @@
 import { Camera, Trash, UploadSimple } from "@phosphor-icons/react";
 import { useId, useRef, useState } from "react";
 import { cx } from "@/lib/cx";
+import { muatGambar, perkecil } from "@/lib/gambar";
 import { buatKlienBrowser } from "@/lib/supabase/client";
 
 /**
@@ -25,39 +26,6 @@ export type MediaUnggah = {
 
 const MAKS_SISI = 1600;
 const SISI_THUMB = 320;
-
-async function muatGambar(berkas: File): Promise<ImageBitmap | HTMLImageElement> {
-  if ("createImageBitmap" in window) {
-    try {
-      return await createImageBitmap(berkas, { imageOrientation: "from-image" });
-    } catch {
-      // jatuh ke <img> (mis. format yang tidak didukung createImageBitmap)
-    }
-  }
-  const url = URL.createObjectURL(berkas);
-  try {
-    const img = new Image();
-    img.src = url;
-    await img.decode();
-    return img;
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
-
-async function perkecil(sumber: ImageBitmap | HTMLImageElement, sisi: number, mutu: number) {
-  const skala = Math.min(1, sisi / Math.max(sumber.width, sumber.height));
-  const w = Math.round(sumber.width * skala);
-  const h = Math.round(sumber.height * skala);
-  const kanvas = document.createElement("canvas");
-  kanvas.width = w;
-  kanvas.height = h;
-  kanvas.getContext("2d")!.drawImage(sumber, 0, 0, w, h);
-  const blob = await new Promise<Blob>((ok, gagal) =>
-    kanvas.toBlob((b) => (b ? ok(b) : gagal(new Error("kompres gagal"))), "image/jpeg", mutu),
-  );
-  return { blob, w, h };
-}
 
 const namaAcak = () => crypto.randomUUID().replace(/-/g, "");
 

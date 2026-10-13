@@ -3,11 +3,15 @@ import Link from "next/link";
 import { PetaMini } from "@/components/peta/peta-publik";
 import { Masukan } from "@/components/ui/isian";
 import { LayarKosong, PesanGagal } from "@/components/ui/keadaan";
+import { LogoMedan } from "@/components/ui/logo-medan";
 import { LogResi, type KejadianLog } from "@/components/ui/log-resi";
 import { PelatKategori } from "@/components/ui/pelat-kategori";
 import { PenggeserBukti } from "@/components/ui/penggeser-bukti";
+import { SlideBeranda } from "@/components/ui/slide-beranda";
 import { Tombol, TombolTautan } from "@/components/ui/tombol";
 import { ambilBaruSelesai, ambilStatistikPublik, ambilTitikPeta } from "@/lib/data/publik";
+import { ambilSlideBeranda } from "@/lib/data/slide";
+import { SLIDE_BAWAAN } from "@/lib/domain/slide";
 import { formatAngka, formatDurasi, formatTanggalPendek } from "@/lib/format";
 import { ambilPengaturan } from "@/lib/pengaturan";
 
@@ -26,34 +30,44 @@ const CONTOH_ALUR: KejadianLog[] = [
 ];
 
 export default async function Beranda() {
-  const [pengaturan, statistik, titik, selesai] = await Promise.all([
+  const [pengaturan, statistik, titik, selesai, slide] = await Promise.all([
     ambilPengaturan(),
     ambilStatistikPublik(30),
     ambilTitikPeta({ hari: 120 }),
     ambilBaruSelesai(3),
+    ambilSlideBeranda(),
   ]);
 
   return (
     <div className="flex flex-col">
-      {/* Blok tugas: hal yang ingin dilakukan warga, rata kiri. */}
-      <section aria-labelledby="judul-beranda" className="border-b border-garis">
-        <div className="mx-auto grid w-full max-w-daftar gap-8 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
-          <div className="flex max-w-baca flex-col gap-4">
+      {/* Hero (DESIGN.md bagian 6, momen 5): logo, tugas utama, dan slideshow sorotan. */}
+      <section aria-labelledby="judul-beranda" className="corak-songket text-putih">
+        <div className="mx-auto grid w-full max-w-daftar items-center gap-10 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-2 lg:gap-12">
+          <div className="flex flex-col gap-4">
+            <LogoMedan className="self-start text-h1" />
             <h1 id="judul-beranda" className="text-h1">
               Ada masalah di jalan, parit, atau lingkungan Anda?
             </h1>
-            <p>{pengaturan["beranda.kalimat_pembuka"]}</p>
+            <p className="max-w-baca">{pengaturan["beranda.kalimat_pembuka"]}</p>
             <TombolTautan href="/lapor" varian="lapor" ukuran="besar" className="self-start">
               Lapor masalah
             </TombolTautan>
+            <form
+              action="/lacak"
+              method="get"
+              className="mt-2 flex flex-col gap-3 rounded-md border-2 border-putih bg-putih p-4 text-aspal"
+              aria-label="Lacak laporan"
+            >
+              <Masukan name="kode" label="Lacak laporan" petunjuk="Masukkan kode di resi, contoh OP-2026-00182" autoComplete="off" spellCheck={false} />
+              <Tombol type="submit" varian="kedua">
+                Lacak
+              </Tombol>
+            </form>
           </div>
-          <form action="/lacak" method="get" className="flex flex-col gap-3 rounded-md border-2 border-aspal p-4" aria-label="Lacak laporan">
-            <Masukan name="kode" label="Lacak laporan" petunjuk="Masukkan kode di resi, contoh OP-2026-00182" autoComplete="off" spellCheck={false} />
-            <Tombol type="submit" varian="kedua">
-              Lacak
-            </Tombol>
-          </form>
+          <SlideBeranda slide={slide.length > 0 ? slide : SLIDE_BAWAAN} />
         </div>
+        {/* Deret pucuk rebung, ragam hias Melayu Deli. Hiasan murni. */}
+        <div aria-hidden className="corak-rebung h-4" />
       </section>
 
       <div className="mx-auto flex w-full max-w-daftar flex-col gap-12 px-4 py-12 md:px-6">

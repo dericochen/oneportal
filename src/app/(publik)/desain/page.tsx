@@ -60,6 +60,8 @@ const WARNA: Array<{ token: string; kelas: string; hex: string; untuk: string; t
   { token: "hijau-selesai", kelas: "bg-hijau", hex: warna.hijau, untuk: "Hanya status selesai", teksTerang: true },
   { token: "oranye", kelas: "bg-oranye", hex: warna.oranye, untuk: "Prioritas tinggi, laporan berulang", teksTerang: true },
   { token: "merah", kelas: "bg-merah", hex: warna.merah, untuk: "Darurat, terlambat, error, bahaya", teksTerang: true },
+  { token: "medan-merah", kelas: "bg-medan-merah", hex: warna.medanMerah, untuk: "Logo Medan Untuk Semua, hero beranda", teksTerang: true },
+  { token: "medan-biru", kelas: "bg-medan-biru", hex: warna.medanBiru, untuk: "Logo Medan Untuk Semua, hero beranda", teksTerang: true },
 ];
 
 const SPASI = [

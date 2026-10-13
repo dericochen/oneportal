@@ -18,6 +18,9 @@
   --color-hijau: #1f7a4a;
   --color-oranye: #b85412;
   --color-merah: #b42318;
+  /* Warna logo "Medan Untuk Semua": hanya untuk hero beranda dan logo. */
+  --color-medan-merah: #a3191e;
+  --color-medan-biru: #17216b;
 
   --radius-*: initial;
   --radius-sm: 0.25rem; /* 4 px: tombol, input, chip, pelat */
@@ -232,6 +235,35 @@ html[data-kontras="tinggi"] {
   &:disabled {
     opacity: 0.5;
   }
+}
+
+/*
+ * Corak hero beranda, terinspirasi ragam hias Melayu Deli. Datar, tanpa
+ * gradien. Kode warna mentah boleh di sini karena SVG data URI tidak bisa
+ * membaca variabel CSS.
+ *
+ * corak-songket       : kisi belah ketupat tipis di atas biru medan
+ * corak-songket-merah : kisi yang sama di atas merah medan
+ * corak-rebung        : deret pucuk rebung (segitiga) merah dengan inti kuning
+ */
+@utility corak-songket {
+  background-color: var(--color-medan-biru);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 2 54 28 28 54 2 28Z' fill='none' stroke='%23263391' stroke-width='1.5'/%3E%3Cpath d='M28 16 40 28 28 40 16 28Z' fill='none' stroke='%23263391' stroke-width='1.5'/%3E%3Cpath d='M28 24 32 28 28 32 24 28Z' fill='%23263391'/%3E%3Cpath d='M0 0 4 0 0 4ZM56 0 52 0 56 4ZM0 56 4 56 0 52ZM56 56 52 56 56 52Z' fill='%23263391'/%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+@utility corak-songket-merah {
+  background-color: var(--color-medan-merah);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 2 54 28 28 54 2 28Z' fill='none' stroke='%23b8363b' stroke-width='1.5'/%3E%3Cpath d='M28 16 40 28 28 40 16 28Z' fill='none' stroke='%23b8363b' stroke-width='1.5'/%3E%3Cpath d='M28 24 32 28 28 32 24 28Z' fill='%23b8363b'/%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+@utility corak-rebung {
+  background-color: var(--color-medan-biru);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='16' viewBox='0 0 32 16'%3E%3Cpath d='M0 16 16 0 32 16Z' fill='%23a3191e'/%3E%3Cpath d='M9 16 16 7 23 16Z' fill='%23ffc629'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: 32px 16px;
 }
 
 /* Bottom nav memperhitungkan safe area HP. */

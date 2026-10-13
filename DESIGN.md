@@ -6,7 +6,7 @@ Pratinjau hidup: halaman [`/desain`](src/app/desain/page.tsx).
 
 ## 1. Konsep
 
-ONE PORTAL harus terasa seperti papan informasi publik yang dirancang dengan baik: terbaca dari jauh, warnanya punya arti, tanpa hiasan. Sekitar 90% antarmuka polos. Kekhasan hanya muncul di empat momen (bagian 6).
+ONE PORTAL harus terasa seperti papan informasi publik yang dirancang dengan baik: terbaca dari jauh, warnanya punya arti, tanpa hiasan. Sekitar 90% antarmuka polos. Kekhasan hanya muncul di lima momen (bagian 6).
 
 Setiap keputusan diturunkan dari benda yang sudah dikenal warga Medan:
 
@@ -36,6 +36,8 @@ Semua pasangan teks–latar lulus WCAG AA. Rasio dihitung terhadap putih #FFFFFF
 | hijau-selesai | #1F7A4A | `hijau` | Hanya status selesai | 5,3:1 (4,8:1 di abu) |
 | oranye | #B85412 | `oranye` | Prioritas tinggi, laporan berulang | 4,9:1 (4,4:1 di abu: hanya untuk ikon, bukan teks) |
 | merah | #B42318 | `merah` | Darurat, terlambat, error, aksi berbahaya | 6,6:1 (5,9:1 di abu); putih di atas merah 6,6:1 |
+| medan-merah | #A3191E | `medan-merah` | Hanya logo "Medan Untuk Semua" dan hero beranda (bagian 6, momen 5) | putih di atas medan-merah 7,7:1 |
+| medan-biru | #17216B | `medan-biru` | Hanya logo "Medan Untuk Semua" dan hero beranda | putih 14,3:1; kuning-rambu 9,4:1 |
 
 Aturan:
 - Kuning hanya untuk tiga hal di atas. Teks di atas kuning selalu aspal.
@@ -156,12 +158,18 @@ Tanpa tombol pil, tanpa radius besar di semua elemen.
 - **Gerak** hanya sebagai umpan balik perubahan: `duration-150`/`duration-200` dengan `ease-keluar`; sheet/dialog 220 ms (`duration-sheet`); tanpa pantulan. `prefers-reduced-motion` mematikan semua animasi dan transisi secara global.
 - Tidak dipakai: animasi muncul saat scroll, parallax, angka menghitung naik, efek mengetik, kartu membesar/terangkat saat hover, latar beranimasi, shimmer.
 
-## 6. Empat momen khas (jangan menambah sendiri)
+## 6. Lima momen khas (jangan menambah sendiri)
 
 1. **Tombol "Lapor masalah"** kuning-rambu. Di bottom nav HP menjadi tab tengah berpelat kuning, bukan tombol bulat melayang. Komponen: `Tombol varian="lapor"`, `NavBawah`.
 2. **Resi laporan**: kode Mono besar + tombol salin, garis putus-putus seperti sobekan, QR, tanggal, kalimat "Simpan atau screenshot resi ini". Halaman lacak memakai log seperti cek resi kurir (kiri tanggal–jam, kanan kejadian, terbaru di atas). Komponen: `Resi`, `LogResi`.
 3. **Cap "SELESAI"**: stempel hijau miring −4° dengan tepi sedikit tidak rata. Animasi masuk sekali (prop `baru`) saat admin menyetujui bukti, lalu menetap di resi, halaman lacak, dan panel laporan selesai di peta. Tidak dipakai di tempat lain. Komponen: `CapSelesai`.
 4. **Bukti di peta**: titik hijau; pada zoom ≥15 menjadi thumbnail foto "sesudah" berbingkai hijau 2 px radius 4 px. Panel detail memakai penggeser sebelum–sesudah berpegangan vertikal dengan label "Sebelum, 12 Okt" / "Sesudah, 14 Okt". (Dibangun di Fase 4–5.)
+
+5. **Hero beranda "Medan Untuk Semua"** (hanya di `/`). Latar biru-medan dengan kisi belah ketupat bergaya songket (`corak-songket`) dan deret pucuk rebung merah-kuning di tepi bawah (`corak-rebung`), ragam hias Melayu Deli. Memuat logo `LogoMedan`, tombol Lapor, form lacak, dan slideshow foto. Aturan:
+   - Corak datar, tanpa gradien, tanpa gerak; didefinisikan sebagai SVG data URI di `globals.css`.
+   - Slideshow berganti tiap 2 detik (`DURASI_SLIDE_MS`), berhenti saat kursor/fokus ada di dalamnya, punya tombol jeda/putar, panah, indikator, geser di HP, dan tidak berjalan otomatis bila pengguna memilih `prefers-reduced-motion`.
+   - Slide dikelola admin di `/admin/slide` (tabel `banners`, bucket publik `konten`). Tanpa slide aktif, beranda memakai tiga slide teks bawaan, bukan foto stok.
+   - Foto slide tetap foto asli tim (aturan bagian 5). Judul slide singkat karena hanya tampil 2 detik.
 
 ## 7. Komponen
 
@@ -181,6 +189,8 @@ Semua di `src/components/ui/`. Halaman tidak boleh membuat komponen baru yang me
 | `LogResi` | `log-resi.tsx` | Timeline gaya cek resi. Label aktor berupa peran/instansi, bukan nama pribadi. |
 | `CapSelesai` | `cap-selesai.tsx` | Momen khas 3. |
 | `Logo` | `logo.tsx` | Wordmark. |
+| `LogoMedan` | `logo-medan.tsx` | Logo "Medan Untuk Semua" (kotak merah + kotak biru). Dibuat dari HTML/CSS, bukan gambar. |
+| `SlideBeranda` | `slide-beranda.tsx` | Slideshow hero beranda (momen khas 5). |
 | `LayarKosong`, `PesanGagal`, `Kerangka` | `keadaan.tsx` | Empty, error (dengan tombol coba lagi), skeleton (tanpa shimmer). |
 | `Dialog`, `DialogKonfirmasi` | `dialog.tsx` | Radix Dialog; aksi berisiko memakai tombol `bahaya`. |
 
