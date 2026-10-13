@@ -49,6 +49,7 @@ export default async function HalamanAkun() {
               return (
                 <ButirRingkas
                   key={l.id}
+                  href={`/lacak/${l.code}`}
                   depan={<PelatKategori slug={kat?.slug ?? "lainnya"} />}
                   judul={l.title}
                   info={[<span key="k" className="font-kode">{l.code}</span>, kec?.name ?? "", formatTanggal(l.submitted_at)]}

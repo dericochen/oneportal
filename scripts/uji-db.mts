@@ -317,6 +317,55 @@ const notifSup = await sebagai<{ title: string }>(id.supervisor, `select title f
 cek("supervisor menerima notifikasi eskalasi", notifSup.length === 1, notifSup);
 await harusGagal("warga tidak bisa menjalankan tick", () => sebagai(id.warga, `select run_sla_tick()`), /permission denied/);
 
+// --- Migrasi 5: input admin (CMS), data publik, dashboard ---------------------
+console.log("\nCMS, data publik, dashboard");
+const intake = await transisi(id.admin, "submit", null, await laporanDasar(id.admin, {
+  title: "Drainase tersumbat di simpang pasar",
+  category_id: kat["drainase-banjir"],
+  channel: "PHONE",
+  intake_name: "Ibu Penelepon",
+  lat: 3.5711, lng: 98.7201,
+}));
+const rIntake = await satu<{ channel: string; intake_name: string; reporter_id: string }>(
+  `select channel, intake_name, reporter_id from reports where id = $1`, [intake.id]);
+cek("admin bisa mencatat laporan telepon dari CMS", rIntake.channel === "PHONE" && rIntake.intake_name === "Ibu Penelepon" && rIntake.reporter_id === id.admin, rIntake);
+await harusGagal("kanal admin harus valid", async () =>
+  transisi(id.admin, "submit", null, await laporanDasar(id.admin, { channel: "WEB" })), /Pilih kanal laporan/);
+await harusGagal("petugas tidak bisa membuat laporan", async () =>
+  transisi(id.petugas, "submit", null, await laporanDasar(id.petugas)), /akun warga/);
+
+const titik = await sebagai<{ code: string; status: string; after_thumb: string | null }>(null, `select code, status, after_thumb from public_map_points()`);
+cek("peta publik: laporan Diterima tidak tampil", !titik.some((t) => t.code === intake.code), titik.map((t) => t.code));
+cek("peta publik: laporan selesai tampil dengan thumbnail sesudah", titik.some((t) => t.code === lapor.code && t.status === "RESOLVED" && !!t.after_thumb), titik);
+cek("peta publik: laporan ditolak tidak tampil", !titik.some((t) => t.status === "REJECTED"));
+
+await db.exec(`select set_config('oneportal.transition','on',false); update reports set is_confidential = true where id = '${induk.id}'; select set_config('oneportal.transition','',false);`);
+const titik2 = await sebagai<{ code: string }>(null, `select code from public_map_points()`);
+cek("peta publik: laporan Rahasia tidak tampil", !titik2.some((t) => t.code === induk.code));
+
+const statistik = await satu<{ s: { masuk: number; selesai: number } }>(`select public_report_stats(30) s`);
+cek("statistik publik menghitung laporan (termasuk Rahasia)", statistik.s.masuk >= 5 && statistik.s.selesai === 1, statistik.s);
+
+const galeri = await sebagai<{ code: string; before_path: string; after_path: string }>(null, `select code, before_path, after_path from public_recent_resolved(6)`);
+cek("galeri sebelum-sesudah berisi laporan selesai", galeri.length === 1 && galeri[0].code === lapor.code && !!galeri[0].before_path && !!galeri[0].after_path, galeri);
+
+const lacak = await sebagai<{ t: { status: string; title: string; events: Array<{ title: string }>; media: Array<{ kind: string }> } }>(null, `select public_track($1) t`, [lapor.code.toLowerCase()]);
+cek("lacak publik: kode huruf kecil tetap ditemukan", lacak[0].t?.status === "RESOLVED");
+cek("lacak publik: tanpa catatan internal", !lacak[0].t.events.some((e) => /Catatan internal|Alasan pengembalian/.test(e.title)), lacak[0].t.events);
+cek("lacak publik: foto sebelum & sesudah ikut", ["BEFORE", "AFTER"].every((k) => lacak[0].t.media.some((m) => m.kind === k)), lacak[0].t.media);
+const lacakBaru = await sebagai<{ t: { title: string | null; tampil: boolean } }>(null, `select public_track($1) t`, [intake.code]);
+cek("lacak publik: laporan belum diverifikasi tanpa judul", lacakBaru[0].t.tampil === false && lacakBaru[0].t.title === null, lacakBaru[0].t);
+const lacakNihil = await sebagai<{ t: unknown }>(null, `select public_track('OP-1999-00000') t`);
+cek("lacak publik: kode tidak ada -> null", lacakNihil[0].t === null);
+
+const dasbor = await sebagai<{ d: { ringkas: { masuk: number; menunggu_verifikasi: number }; kecamatan: unknown[] } }>(id.supervisor, `select staff_dashboard(30) d`);
+cek("dashboard staf: angka dari database", dasbor[0].d.ringkas.masuk >= 6 && dasbor[0].d.kecamatan.length === 21, dasbor[0].d.ringkas);
+await harusGagal("dashboard staf ditolak untuk warga", () => sebagai(id.warga, `select staff_dashboard(30)`), /hanya untuk admin dan supervisor/);
+
+const wilayah = await sebagai<{ w: Array<{ nama: string; lat: number; kelurahan: unknown[] }> }>(null, `select daftar_wilayah() w`);
+cek("daftar wilayah: 21 kecamatan bertitik pusat, 151 kelurahan",
+  wilayah[0].w.length === 21 && wilayah[0].w.every((k) => k.lat > 3.4 && k.lat < 3.9) && wilayah[0].w.reduce((n, k) => n + k.kelurahan.length, 0) === 151);
+
 console.log(`\n${lulus} lulus, ${gagal} gagal`);
 await db.close();
 process.exit(gagal > 0 ? 1 : 0);

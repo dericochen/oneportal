@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
-import { RingkasanAngka } from "@/components/staf/ringkasan-angka";
+import { bacaFilter, CommandCenter } from "@/components/staf/command-center";
+import { TombolTautan } from "@/components/ui/tombol";
 import { wajibPeran } from "@/lib/auth";
-import { ambilRingkasanStaf } from "@/lib/data/ringkasan";
 
 export const metadata: Metadata = { title: "Command center" };
 
-export default async function BerandaAdmin() {
-  const sesi = await wajibPeran(["ADMIN"], "/admin");
-  const ringkasan = await ambilRingkasanStaf();
+export default async function BerandaAdmin(props: PageProps<"/admin">) {
+  await wajibPeran(["ADMIN"], "/admin");
+  const filter = bacaFilter(await props.searchParams);
   return (
-    <div className="flex flex-col gap-8">
-      <header>
+    <div className="flex flex-col gap-6">
+      <header className="flex flex-wrap items-start justify-between gap-4">
         <h1 className="text-h1">Command center</h1>
-        <p className="mt-1 text-aspal-2">Masuk sebagai {sesi.namaLengkap}, admin ONE PORTAL.</p>
+        <TombolTautan href="/admin/laporan/baru">Catat laporan baru</TombolTautan>
       </header>
-      <RingkasanAngka data={ringkasan} />
+      <CommandCenter dasar="/admin" filter={filter} />
     </div>
   );
 }

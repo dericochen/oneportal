@@ -11,7 +11,7 @@ import { buatKlienServer } from "@/lib/supabase/server";
 export const metadata: Metadata = { title: "Notifikasi" };
 
 /** Tautan notifikasi hanya ditampilkan bila halamannya sudah tersedia di fase ini. */
-const AWALAN_TERSEDIA = ["/akun", "/admin", "/petugas", "/supervisor", "/notifikasi"];
+const AWALAN_TERSEDIA = ["/akun", "/admin", "/petugas", "/supervisor", "/notifikasi", "/lacak", "/lapor"];
 const tautanTersedia = (l: string | null) => !!l && AWALAN_TERSEDIA.some((a) => l === a || l.startsWith(`${a}/`));
 
 export default async function HalamanNotifikasi() {

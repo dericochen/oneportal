@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChipPrioritas, ChipSla, ChipStatus, ChipTindakan } from "@/components/ui/chip";
 import { LogResi } from "@/components/ui/log-resi";
+import { PanelAksiPetugas } from "@/components/laporan/panel-petugas";
 import { PelatKategori } from "@/components/ui/pelat-kategori";
 import { wajibPeran } from "@/lib/auth";
 import { ambilDetailTugas } from "@/lib/data/tugas";
@@ -18,7 +19,7 @@ export const metadata: Metadata = { title: "Detail tugas" };
  */
 export default async function DetailTugas(props: PageProps<"/petugas/tugas/[id]">) {
   const { id } = await props.params;
-  await wajibPeran(["OFFICER"], `/petugas/tugas/${id}`);
+  const sesi = await wajibPeran(["OFFICER"], `/petugas/tugas/${id}`);
   const t = await ambilDetailTugas(id);
   if (!t) notFound();
 
@@ -91,6 +92,8 @@ export default async function DetailTugas(props: PageProps<"/petugas/tugas/[id]"
         <ArrowSquareOut aria-hidden className="size-5" />
         Navigasi ke lokasi (Google Maps)
       </a>
+
+      <PanelAksiPetugas id={t.id} status={t.status} idPengguna={sesi.id} />
 
       <section aria-labelledby="judul-deskripsi">
         <h2 id="judul-deskripsi" className="text-h3">

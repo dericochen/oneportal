@@ -239,6 +239,21 @@ html[data-kontras="tinggi"] {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Penggeser sebelum–sesudah: posisi dari variabel --posisi (diatur lewat ref). */
+.penggeser-bukti {
+  --posisi: 50%;
+}
+.penggeser-sebelum {
+  clip-path: inset(0 calc(100% - var(--posisi)) 0 0);
+}
+.penggeser-pegangan {
+  left: var(--posisi);
+}
+.penggeser-bukti:has(input:focus-visible) {
+  outline: 2px solid var(--color-aspal);
+  box-shadow: 0 0 0 5px var(--color-kuning);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

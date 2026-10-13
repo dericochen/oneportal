@@ -30,9 +30,9 @@ export type ButirNav = {
 
 export const NAV_PUBLIK: ButirNav[] = [
   { href: "/layanan", label: "Layanan", ikon: Buildings, tersedia: false }, // Fase 1
-  { href: "/peta", label: "Peta", ikon: MapTrifold, tersedia: false }, // Fase 5
-  { href: "/lapor", label: "Lapor", ikon: Megaphone, tersedia: false, lapor: true }, // Fase 2
-  { href: "/lacak", label: "Lacak", ikon: MagnifyingGlass, tersedia: false }, // Fase 2
+  { href: "/peta", label: "Peta", ikon: MapTrifold, tersedia: true },
+  { href: "/lapor", label: "Lapor", ikon: Megaphone, tersedia: true, lapor: true },
+  { href: "/lacak", label: "Lacak", ikon: MagnifyingGlass, tersedia: true },
   { href: "/statistik", label: "Statistik", ikon: ChartBar, tersedia: false }, // Fase 7
 ];
 
@@ -43,22 +43,38 @@ export const MENU_ADMIN: GrupMenuStaf[] = [
   {
     judul: "Antrean",
     butir: [
-      { href: "/admin/verifikasi", label: "Verifikasi", ikon: Tray, tersedia: false }, // Fase 3
-      { href: "/admin/tinjau-bukti", label: "Tinjau bukti", ikon: Eye, tersedia: false }, // Fase 4
+      { href: "/admin/verifikasi", label: "Verifikasi", ikon: Tray, tersedia: true },
+      { href: "/admin/tinjau-bukti", label: "Tinjau bukti", ikon: Eye, tersedia: true },
     ],
   },
-  { judul: "Laporan", butir: [{ href: "/admin/laporan", label: "Semua laporan", ikon: ClipboardText, tersedia: false }] },
+  {
+    judul: "Laporan",
+    butir: [
+      { href: "/admin/laporan", label: "Semua laporan", ikon: ClipboardText, tersedia: true },
+      { href: "/admin/laporan/baru", label: "Catat laporan baru", ikon: Megaphone, tersedia: true },
+    ],
+  },
   { judul: "Pengguna", butir: [{ href: "/admin/pengguna", label: "Pengguna", ikon: UsersThree, tersedia: false }] },
   { judul: "Akun", butir: [{ href: "/notifikasi", label: "Notifikasi", ikon: Bell, tersedia: true }] },
 ];
+
+/** Sisipkan jumlah antrean ke menu admin. */
+export function menuAdminDenganHitung(h: { verifikasi: number; bukti: number }): GrupMenuStaf[] {
+  return MENU_ADMIN.map((g) => ({
+    ...g,
+    butir: g.butir.map((b) =>
+      b.href === "/admin/verifikasi" ? { ...b, hitung: h.verifikasi } : b.href === "/admin/tinjau-bukti" ? { ...b, hitung: h.bukti } : b,
+    ),
+  }));
+}
 
 export const MENU_SUPERVISOR: GrupMenuStaf[] = [
   { judul: "Ringkasan", butir: [{ href: "/supervisor", label: "Command center", ikon: Gauge, tersedia: true }] },
   {
     judul: "Pemantauan",
     butir: [
-      { href: "/supervisor/kinerja", label: "Kinerja instansi", ikon: ChartBar, tersedia: false }, // Fase 5
-      { href: "/supervisor/laporan", label: "Semua laporan", ikon: ClipboardText, tersedia: false }, // Fase 3
+      { href: "/supervisor/laporan", label: "Semua laporan", ikon: ClipboardText, tersedia: true },
+      { href: "/supervisor/kinerja", label: "Kinerja instansi", ikon: ChartBar, tersedia: false }, // ada di command center
     ],
   },
   { judul: "Akun", butir: [{ href: "/notifikasi", label: "Notifikasi", ikon: Bell, tersedia: true }] },
