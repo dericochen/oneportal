@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/*
+ * Token ONE PORTAL "rambu kota". Sumber kebenaran: DESIGN.md.
+ * Palet, radius, bayangan, blur, ukuran teks, dan animasi bawaan Tailwind
+ * dimatikan (`initial`) agar kelas di luar token tidak menghasilkan CSS.
+ */
+@theme static {
+  --color-*: initial;
+  --color-aspal: #1e2226;
+  --color-aspal-2: #4a4f55;
+  --color-putih: #ffffff;
+  --color-abu: #f2f3f1;
+  --color-garis: #d5d8d4;
+  --color-garis-tegas: #6b7076;
+  --color-kuning: #ffc629;
+  --color-biru: #1f57b8;
+  --color-hijau: #1f7a4a;
+  --color-oranye: #b85412;
+  --color-merah: #b42318;
+
+  --radius-*: initial;
+  --radius-sm: 0.25rem; /* 4 px: tombol, input, chip, pelat */
+  --radius-md: 0.5rem; /* 8 px: kartu, panel, dialog */
+  --radius-lg: 0.75rem; /* 12 px: hanya sisi atas bottom sheet */
+
+  --shadow-*: initial;
+  --shadow-lapis: 0 8px 24px rgb(30 34 38 / 0.16), 0 1px 3px rgb(30 34 38 / 0.12);
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+  --blur-*: initial;
+
+  --text-*: initial;
+  --text-publik: var(--ukuran-publik);
+  --text-publik--line-height: 1.55;
+  --text-staf: 1rem;
+  --text-staf--line-height: 1.55;
+  --text-kecil: 0.9375rem;
+  --text-kecil--line-height: 1.5;
+  --text-kecil-staf: 0.875rem;
+  --text-kecil-staf--line-height: 1.45;
+  --text-h3: var(--ukuran-h3);
+  --text-h3--line-height: 1.2;
+  --text-h2: clamp(1.5rem, 1.2rem + 1.2vw, 1.875rem);
+  --text-h2--line-height: 1.2;
+  --text-h1: clamp(1.875rem, 1.4rem + 2vw, 2.5rem);
+  --text-h1--line-height: 1.2;
+  --text-kode-besar: clamp(1.75rem, 1.3rem + 2vw, 2.25rem);
+  --text-kode-besar--line-height: 1.1;
+
+  --container-*: initial;
+  --container-baca: 68ch;
+  --container-teks: 45rem; /* 720 px */
+  --container-daftar: 60rem; /* 960 px */
+  --container-form: 35rem; /* 560 px */
+
+  --ease-*: initial;
+  --ease-keluar: cubic-bezier(0.2, 0, 0, 1);
+
+  --animate-*: initial;
+  --animate-putar: putar 0.9s linear infinite;
+  --animate-cap: cap-masuk 220ms cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-sheet: sheet-naik 220ms cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-muncul: muncul 150ms cubic-bezier(0.2, 0, 0, 1) both;
+
+  @keyframes putar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes cap-masuk {
+    from {
+      opacity: 0;
+      transform: scale(1.25);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes sheet-naik {
+    from {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes muncul {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@theme inline {
+  --font-*: initial;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+  --font-kode: var(--font-atkinson-mono), ui-monospace, monospace;
+  --default-font-family: var(--font-sans);
+  --default-mono-font-family: var(--font-kode);
+}
+
+:root {
+  --ukuran-publik: 1.0625rem; /* 17 px di HP */
+  --ukuran-h3: 1.25rem; /* 20 px */
+  color-scheme: light;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --ukuran-publik: 1.125rem; /* 18 px di laptop */
+    --ukuran-h3: 1.375rem; /* 22 px */
+  }
+}
+
+/* Pengaturan ukuran teks (aksesibilitas): skala seluruh rem. */
+html[data-ukuran-teks="besar"] {
+  font-size: 112.5%;
+}
+html[data-ukuran-teks="sangat-besar"] {
+  font-size: 125%;
+}
+
+/* Mode kontras tinggi: pengganti dark mode. */
+html[data-kontras="tinggi"] {
+  --color-aspal-2: #1e2226;
+  --color-garis: #6b7076;
+  --color-garis-tegas: #1e2226;
+  --color-abu: #ffffff;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-putih);
+    color: var(--color-aspal);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Fokus keyboard: cincin aspal 2 px dikelilingi kuning-rambu 3 px. */
+  :focus-visible {
+    outline: 2px solid var(--color-aspal);
+    outline-offset: 0;
+    box-shadow: 0 0 0 5px var(--color-kuning);
+  }
+
+  /* Teks isian minimal 16 px agar iPhone tidak memperbesar layar. */
+  input,
+  select,
+  textarea {
+    font-size: max(1rem, 1em);
+  }
+
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Tautan di dalam teks: biru dan selalu bergaris bawah. */
+@utility tautan {
+  color: var(--color-biru);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+@utility duration-sheet {
+  transition-duration: 220ms;
+}
+
+/* Checkbox & radio: border 2 px garis-tegas, tercentang = aspal. */
+@utility centang-rambu {
+  appearance: none;
+  border: 2px solid var(--color-garis-tegas);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-putih);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  &:checked {
+    border-color: var(--color-aspal);
+    background-color: var(--color-aspal);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+@utility radio-rambu {
+  appearance: none;
+  border: 2px solid var(--color-garis-tegas);
+  border-radius: 9999px;
+  background-color: var(--color-putih);
+  &:checked {
+    border-color: var(--color-aspal);
+    background-color: var(--color-aspal);
+    box-shadow: inset 0 0 0 4px var(--color-putih);
+  }
+  &:checked:focus-visible {
+    box-shadow:
+      inset 0 0 0 4px var(--color-putih),
+      0 0 0 5px var(--color-kuning);
+  }
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+/* Bottom nav memperhitungkan safe area HP. */
+@utility pb-aman {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .tanpa-cetak {
+    display: none !important;
+  }
+}
