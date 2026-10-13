@@ -189,7 +189,7 @@ Semua di `src/components/ui/`. Halaman tidak boleh membuat komponen baru yang me
 | `LogResi` | `log-resi.tsx` | Timeline gaya cek resi. Label aktor berupa peran/instansi, bukan nama pribadi. |
 | `CapSelesai` | `cap-selesai.tsx` | Momen khas 3. |
 | `Logo` | `logo.tsx` | Wordmark. |
-| `LogoMedan` | `logo-medan.tsx` | Logo "Medan Untuk Semua" (kotak merah + kotak biru). Dibuat dari HTML/CSS, bukan gambar. |
+| `LogoMedan` | `logo-medan.tsx` | Logo "Medan Untuk Semua" (kotak merah + kotak biru). Memakai berkas asli `public/logo-medan.png` di atas piring putih. |
 | `SlideBeranda` | `slide-beranda.tsx` | Slideshow hero beranda (momen khas 5). |
 | `LayarKosong`, `PesanGagal`, `Kerangka` | `keadaan.tsx` | Empty, error (dengan tombol coba lagi), skeleton (tanpa shimmer). |
 | `Dialog`, `DialogKonfirmasi` | `dialog.tsx` | Radix Dialog; aksi berisiko memakai tombol `bahaya`. |
