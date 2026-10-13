@@ -4,7 +4,7 @@ project_id = "oneportal"
 
 [auth]
 # URL situs produksi (tautan di email auth dan redirect).
-site_url = "https://oneportal.vercel.app"
+site_url = "https://oneportal-one.vercel.app"
 additional_redirect_urls = ["http://localhost:3000"]
 enable_signup = true
 
