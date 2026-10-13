@@ -8,19 +8,18 @@
  * 2. Empat akun demo (dibuat lewat Supabase Auth Admin API, email langsung
  *    terkonfirmasi) lalu peran dan instansinya ditetapkan.
  *
+ * SQL dijalankan lewat SUPABASE_DB_URL bila ada, atau lewat Supabase CLI
+ * (`supabase login` + `supabase link`) bila tidak.
  * Data laporan realistis (±500 laporan) menyusul di Fase 6.
  */
 import { AKUN_DEMO, KATA_SANDI_DEMO, buatSqlMaster, buatSqlPeranDemo } from "./lib/master.mts";
-import { klienAdmin, klienDb } from "./lib/env.mts";
+import { jalankanSql, klienAdmin } from "./lib/env.mts";
 
-const db = await klienDb();
 const supabase = klienAdmin();
 
 try {
   console.log("Data master…");
-  await db.query("begin");
-  await db.query(buatSqlMaster());
-  await db.query("commit");
+  await jalankanSql(`begin;\n${buatSqlMaster()}\ncommit;`);
 
   console.log("Akun demo…");
   const { data: daftar, error: errList } = await supabase.auth.admin.listUsers({ perPage: 1000 });
@@ -43,20 +42,18 @@ try {
       console.log(`  dibuat   ${akun.email}`);
     }
   }
-  await db.query(buatSqlPeranDemo());
 
-  const { rows } = await db.query<Record<string, number>>(`select
-    (select count(*)::int from public.districts) kecamatan,
-    (select count(*)::int from public.villages) kelurahan,
-    (select count(*)::int from public.agencies) instansi,
-    (select count(*)::int from public.report_categories) kategori,
-    (select count(*)::int from public.sla_policies) sla,
-    (select count(*)::int from public.profiles where is_demo) akun_demo`);
-  console.log("\nSelesai:", rows[0]);
+  const ringkas = await jalankanSql(`${buatSqlPeranDemo()}
+select
+  (select count(*)::int from public.districts) kecamatan,
+  (select count(*)::int from public.villages) kelurahan,
+  (select count(*)::int from public.agencies) instansi,
+  (select count(*)::int from public.report_categories) kategori,
+  (select count(*)::int from public.sla_policies) sla,
+  (select count(*)::int from public.profiles where is_demo) akun_demo,
+  (select string_agg(p.role::text, ',' order by p.role) from public.profiles p where is_demo) peran_demo;`);
+  console.log("\nSelesai:", ringkas[0] ?? "(ringkasan tidak tersedia)");
 } catch (e) {
-  await db.query("rollback").catch(() => {});
   console.error("\nSeed gagal:", (e as Error).message);
   process.exitCode = 1;
-} finally {
-  await db.end();
 }

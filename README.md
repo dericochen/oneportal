@@ -39,7 +39,7 @@ Butuh Node.js 24 dan satu proyek Supabase (paket Free cukup).
    ```bash
    cp .env.example .env.local
    ```
-   Isi semua nilai. `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_URL`, dan `CRON_SECRET` adalah rahasia: jangan dibagikan, jangan diberi awalan `NEXT_PUBLIC_`.
+   Isi semua nilai. `SUPABASE_SERVICE_ROLE_KEY` dan `CRON_SECRET` adalah rahasia: jangan dibagikan, jangan diberi awalan `NEXT_PUBLIC_`. `SUPABASE_DB_URL` opsional: bila kosong, skrip `db:*` memakai Supabase CLI (`npx supabase login` lalu `npx supabase link --project-ref <ref>`).
 3. **Pasang dependensi, migrasi, dan seed**
    ```bash
    npm ci

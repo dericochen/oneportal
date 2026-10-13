@@ -9,11 +9,25 @@
  * Membutuhkan SUPABASE_DB_URL di .env.local (Project Settings > Database >
  * Connection string > Session pooler, dengan kata sandi database).
  */
+import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { klienDb } from "./lib/env.mts";
 
 const DIR = join(import.meta.dirname, "..", "supabase", "migrations");
+
+// Tanpa SUPABASE_DB_URL: pakai Supabase CLI (butuh `supabase login` + `supabase link`).
+// CLI mencatat riwayat migrasi di supabase_migrations.schema_migrations.
+if (!process.env.SUPABASE_DB_URL) {
+  console.log("SUPABASE_DB_URL kosong, memakai `supabase db push --linked`…");
+  const p = spawnSync("npx", ["supabase", "db", "push", "--linked", "--yes"], {
+    cwd: join(import.meta.dirname, ".."),
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+  process.exit(p.status ?? 1);
+}
+
 const db = await klienDb();
 
 try {
