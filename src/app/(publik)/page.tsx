@@ -77,7 +77,7 @@ export default async function Beranda() {
       {/* Hero: foto slide admin sebagai latar penuh (berganti tiap 2 detik), di atasnya tugas utama warga. */}
       <section
         aria-labelledby="judul-beranda"
-        className="relative isolate flex min-h-[86svh] items-center overflow-hidden corak-ragi text-putih lg:min-h-[44rem]"
+        className="relative isolate flex min-h-[72svh] items-center overflow-hidden corak-ragi text-putih lg:min-h-[40rem]"
       >
         <LatarSlideHero slide={slide.length > 0 ? slide : SLIDE_BAWAAN} />
         {!adaFoto && <DaunMelayang />}
