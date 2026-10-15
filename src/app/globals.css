@@ -752,3 +752,45 @@ html .maplibregl-marker {
     visibility: visible !important;
   }
 }
+
+.judul-publik {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
+.judul-publik span {
+  font-family: inherit;
+}
+
+@media (min-width: 48rem) {
+  .judul-publik {
+    max-width: 12ch;
+    line-height: 1.02;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .judul-publik {
+    line-height: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .judul-publik,
+  [data-muncul],
+  .animate-naik,
+  .animate-geser-masuk,
+  .animate-masuk-halaman,
+  .animate-ken-burns,
+  .animate-pita,
+  .animate-goyang,
+  .animate-melayang-1,
+  .animate-melayang-2,
+  .animate-melayang-3 {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

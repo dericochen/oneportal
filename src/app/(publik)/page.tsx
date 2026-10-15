@@ -84,7 +84,7 @@ export default async function Beranda() {
         <div className="relative mx-auto w-full max-w-situs px-4 pt-10 pb-36 md:px-6 md:pt-14 lg:pb-28">
           <div className="flex max-w-teks flex-col gap-6">
             <LogoMedan className="animate-naik self-start text-h1" />
-            <h1 id="judul-beranda" className="animate-naik tunda-1 text-hero font-extrabold">
+            <h1 id="judul-beranda" className="judul-publik animate-naik tunda-1 text-hero font-extrabold">
               {posMedan < 0 ? (
                 judul
               ) : (
@@ -106,7 +106,7 @@ export default async function Beranda() {
             <p className="animate-naik tunda-2 max-w-baca text-lumut">{pengaturan["beranda.kalimat_pembuka"]}</p>
             <div className="animate-naik tunda-3 flex flex-wrap gap-3">
               <TombolTautan href="/lapor" varian="lapor" ukuran="besar">
-                Lapor masalah
+                Sampaikan laporan
               </TombolTautan>
               <TombolTautan href="/peta" varian="terang" ukuran="besar">
                 Lihat peta
