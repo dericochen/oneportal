@@ -62,7 +62,10 @@ export default async function Beranda() {
     ambilPengaturan(),
   ]);
   // Judul hero dari CMS; kata "Medan" (bila ada) diberi garis kuning.
-  const judul = pengaturan["beranda.judul"];
+  const judul = pengaturan["beranda.judul"].replace(
+    /Medan,\s*mulai dari satu laporan\.?/i,
+    "Medan. Mulai dari satu laporan.",
+  );
   const posMedan = judul.indexOf("Medan");
   const kataBerganti = pengaturan["beranda.kata_berganti"]
     .split(",")
