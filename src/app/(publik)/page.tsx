@@ -79,7 +79,7 @@ export default async function Beranda() {
       {/* Hero: foto slide admin sebagai latar penuh (berganti tiap 2 detik), di atasnya tugas utama warga. */}
       <section
         aria-labelledby="judul-beranda"
-        className="relative isolate flex min-h-[72svh] items-center overflow-hidden corak-ragi text-putih lg:min-h-[40rem]"
+        className="relative isolate flex min-h-[64svh] items-center overflow-hidden corak-ragi text-putih lg:min-h-[36rem]"
       >
         <LatarSlideHero slide={slide.length > 0 ? slide : SLIDE_BAWAAN} />
         {!adaFoto && <DaunMelayang />}
@@ -98,12 +98,15 @@ export default async function Beranda() {
             <p className="animate-naik tunda-2 max-w-baca text-lumut">{pengaturan["beranda.kalimat_pembuka"]}</p>
             <div className="animate-naik tunda-3 flex flex-wrap gap-3">
               <TombolTautan href="/lapor" varian="lapor" ukuran="besar">
-                Sampaikan laporan
+                Lapor sekarang
               </TombolTautan>
               <TombolTautan href="/peta" varian="terang" ukuran="besar">
                 Lihat peta
               </TombolTautan>
             </div>
+            <p className="animate-naik tunda-3 max-w-form text-kecil text-lumut">
+              Gratis untuk warga. Simpan kode resi Anda untuk melihat perkembangan laporan.
+            </p>
             <form
               action="/lacak"
               method="get"
@@ -160,7 +163,7 @@ export default async function Beranda() {
           ) : (
             <PesanGagal judul="Angka belum termuat" pesan="Server data tidak dapat dihubungi. Muat ulang halaman ini." className="bg-putih" />
           )}
-          <p className="mt-3 text-kecil text-aspal-2">Data simulasi prototipe.</p>
+          <p className="mt-3 text-kecil text-aspal-2">Data simulasi prototipe, bukan kanal resmi Pemerintah Kota Medan.</p>
         </div>
       </section>
 
@@ -168,8 +171,8 @@ export default async function Beranda() {
         {/* Kategori: jalan pintas ke form lapor dengan kategori terpilih. */}
         <section aria-labelledby="judul-kategori" className="flex flex-col gap-8">
           <Muncul>
-            <JudulBagian id="judul-kategori" judul="Apa yang ingin Anda laporkan?">
-              Pilih jenis masalahnya. Form lapor langsung terisi kategorinya.
+            <JudulBagian id="judul-kategori" judul="Pilih masalah di sekitar Anda">
+              Pilih kategori agar laporan langsung diteruskan ke pihak yang tepat.
             </JudulBagian>
           </Muncul>
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -214,7 +217,7 @@ export default async function Beranda() {
             <TombolTautan href="/peta" className="self-start">
               Buka peta lengkap
             </TombolTautan>
-            <p className="text-kecil text-aspal-2">Data simulasi prototipe.</p>
+            <p className="text-kecil text-aspal-2">Data simulasi prototipe, bukan kanal resmi Pemerintah Kota Medan.</p>
           </Muncul>
           <Muncul tunda={2}>
             {titik ? (
