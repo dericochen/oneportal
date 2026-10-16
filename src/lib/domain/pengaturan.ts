@@ -3,7 +3,7 @@
  * Pembacaan dari database ada di src/lib/pengaturan.ts (server-only).
  */
 export const BAWAAN_PENGATURAN = {
-  "beranda.judul": "Bersama kita rawat Medan. Mulai dari satu laporan.",
+  "beranda.judul": "Rawat Medan bersama|Mulai dari satu laporan",
   "beranda.kata_berganti": "jalan berlubang, parit tersumbat, sampah menumpuk, lampu jalan mati, pohon tumbang",
   "beranda.kalimat_pembuka":
     "Laporkan sekarang, lalu pantau setiap langkahnya. Laporan baru dinyatakan selesai setelah ada bukti foto sebelum dan sesudah diperbaiki.",

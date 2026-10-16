@@ -62,11 +62,10 @@ export default async function Beranda() {
     ambilPengaturan(),
   ]);
   // Judul hero dari CMS; kata "Medan" (bila ada) diberi garis kuning.
-  const judul = pengaturan["beranda.judul"].replace(
-    /Medan,\s*mulai dari satu laporan\.?/i,
-    "Medan. Mulai dari satu laporan.",
-  );
-  const posMedan = judul.indexOf("Medan");
+  const judul = pengaturan["beranda.judul"];
+  const [barisPertama, barisKedua] = judul.includes("|")
+    ? judul.split("|", 2)
+    : ["Rawat Medan bersama", "Mulai dari satu laporan"];
   const kataBerganti = pengaturan["beranda.kata_berganti"]
     .split(",")
     .map((k) => k.trim())
@@ -88,18 +87,8 @@ export default async function Beranda() {
           <div className="flex max-w-teks flex-col gap-6">
             <LogoMedan className="animate-naik self-start text-h1" />
             <h1 id="judul-beranda" className="judul-publik animate-naik tunda-1 text-hero font-extrabold">
-              {posMedan < 0 ? (
-                judul
-              ) : (
-                <>
-                  {judul.slice(0, posMedan)}
-                  <span className="relative inline-block whitespace-nowrap">
-                    Medan
-                    <span aria-hidden className="absolute inset-x-0 -bottom-1 h-2 origin-left animate-sapuan rounded-sm bg-kuning" />
-                  </span>
-                  {judul.slice(posMedan + 5)}
-                </>
-              )}
+              <span className="block">{barisPertama.replace(/,|\./g, "")}</span>
+              <span className="block">{barisKedua.replace(/,|\./g, "")}</span>
             </h1>
             {kataBerganti.length > 0 && (
               <p className="animate-naik tunda-2 max-w-form text-h3 leading-snug font-semibold text-putih">
